@@ -4,7 +4,10 @@
 
 - https://swapi-people-viewer-mrut.vercel.app/
 
----
+
+## ✅ Test Usernames-
+admin@test.com
+user1@gmail.com
 
 ## 🚀 Overview
 
@@ -56,9 +59,10 @@ This project is a React-based front-end interface for a **People Directory** app
 - **Zustand** – Lightweight state management (via `useAuthStore`)
 
 
-## 📸 UI Preview (Optional)
+## ✅ How to Run the project
 
-You can add screenshots or a screen recording here to visualize the final result.
+npm install
+npm run dev
 
 
 ## 🛠️ Additional Functional Features (Post-Landing Page)
