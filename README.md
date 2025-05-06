@@ -10,7 +10,6 @@
 
 This project is a React-based front-end interface for a **People Directory** application, using **Mantine UI** for design consistency and smooth interactivity. The landing page presents a welcoming interface for both authenticated and unauthenticated users, offering appropriate navigation options and a polished UI.
 
----
 
 ## 🎨 Features and Justifications
 
@@ -47,7 +46,6 @@ This project is a React-based front-end interface for a **People Directory** app
 - Button hover effects provide feedback and visual depth.
 - Rounded corners and soft shadows are used for modern design sensibilities.
 
----
 
 ## 🛠️ Tech Stack
 
@@ -57,13 +55,11 @@ This project is a React-based front-end interface for a **People Directory** app
 - **React Router DOM** – Handles client-side navigation
 - **Zustand** – Lightweight state management (via `useAuthStore`)
 
----
 
 ## 📸 UI Preview (Optional)
 
 You can add screenshots or a screen recording here to visualize the final result.
 
----
 
 ## 🛠️ Additional Functional Features (Post-Landing Page)
 
@@ -73,17 +69,13 @@ a. 🔍 Search Bar
 Allows users to filter characters by name, making it easier to find specific people.
 
 b. 📊 Sort Options
-
-Sort by Name (A–Z or Z–A)
-    OR
-Sort by Birth Year (Ascending or Descending)
+Sort by Name (A–Z or Z–A) OR Sort by Birth Year (Ascending or Descending)
 
 c. 📄 Pagination
 Client-side pagination ensures smoother navigation across large datasets.
----
+
 
 ## ✅ Future Improvements
 
 - Add a **profile dropdown menu** in place of the top-right Logout button.
 - Dark Mode Support.
-
