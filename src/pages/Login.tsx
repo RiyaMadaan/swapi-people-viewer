@@ -8,6 +8,7 @@ import {
   Stack,
   Alert,
   Space,
+  Loader,
 } from '@mantine/core';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -16,32 +17,46 @@ import { useAuthStore } from '../store/app.store';
 const Login = () => {
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const login = useAuthStore((state) => state.login);
   const navigate = useNavigate();
 
-  const allowedUsernames = ['admin@test.com', 'user1@gmail.com'];
+  const allowedUserNames = ['admin@test.com', 'user1@gmail.com',];
 
   const handleLogin = () => {
-    if (allowedUsernames.includes(email)) {
-      login(email);
-      navigate('/people');
-    } else {
-      setError('Invalid email! Please enter a valid email.');
+    setError('');
+    if (!validateEmail(email)) {
+      setError('Please enter a valid email address.');
+      return;
     }
+
+    setLoading(true);
+    setTimeout(() => {
+      if (allowedUserNames.includes(email)) {
+        login(email);
+        navigate('/people');
+      } else {
+        setError('User  does not exist. Please check your email.');
+      }
+      setLoading(false);
+    }, 1000); 
+  };
+
+  const validateEmail = (email:string) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(String(email).toLowerCase());
   };
 
   return (
     <Container fluid style={{ height: '100vh', background: 'linear-gradient(45deg, #f3c9d6, #e2f0cb)' }}>
-      <Center style={{ height: '100%' }}>
+      <Center style={{ height: '100%'}}>
         <Paper
           p="xl"
           shadow="xl"
-          radius="xl"
+          radius="lg"
           style={{
-            width: 400,
-            backgroundColor: 'white',
-            borderRadius: '20px',
-            boxShadow: '0 10px 30px rgba(0, 0, 0, 0.1)',
+            width: '100%',
+            maxWidth: "35rem"
           }}
         >
           <Title
@@ -65,7 +80,10 @@ const Login = () => {
             <TextInput
               label="Email address"
               value={email}
-              onChange={(e) => setEmail(e.currentTarget.value)}
+              onChange={(e) => {
+                setEmail(e.currentTarget.value);
+                if (error) setError('');
+              }}
               placeholder="Enter your email"
               required
               styles={{
@@ -90,18 +108,23 @@ const Login = () => {
               fullWidth
               size="md"
               radius="md"
+              disabled={loading}
               sx={{
                 background: 'linear-gradient(45deg, #f3c9d6, #e2f0cb)',
                 color: '#333',
                 fontWeight: 600,
                 fontSize: '16px',
-                transition: 'all 0.3s ease',
+                transition: 'background 0.3s ease, transform 0.3s ease',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
                 '&:hover': {
-                  background: 'linear-gradient(45deg, #e2f0cb, #f3c9d6)',
+                  background: 'linear-gradient(45deg , #e2f0cb, #f3c9d6)',
+                  transform: 'scale(1.02)',
                 },
               }}
             >
-              Login
+              {loading ? <Loader size="sm" color="#333" /> : 'Login'}
             </Button>
           </Stack>
 

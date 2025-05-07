@@ -7,7 +7,6 @@ interface AuthState {
 }
 
 export const useAuthStore = create<AuthState>((set) => {
-  // Check if there's a user in localStorage
   const storedUser = localStorage.getItem('user');
 
   return {

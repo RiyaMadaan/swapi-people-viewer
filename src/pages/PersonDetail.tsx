@@ -6,13 +6,17 @@ import {
   Loader,
   Container,
   Title,
-  Stack,
+  Grid,
   Avatar,
   Center,
   Button,
+  Box,
+  Group,
+  Divider,
+  Badge,
 } from "@mantine/core";
 import { useState } from "react";
-import { useAuthStore } from '../store/app.store';
+import { useAuthStore } from "../store/app.store";
 
 const PersonDetail = () => {
   const { id } = useParams();
@@ -22,14 +26,14 @@ const PersonDetail = () => {
     const res = await fetch(`https://swapi.py4e.com/api/people/${id}/`);
     return res.json();
   });
-    const user = useAuthStore((state) => state.user);
-    const logout = useAuthStore((state) => state.logout);
-  
-    const handleLogout = () => {
-      logout();
-      navigate('/login');
-    };
 
+  const user = useAuthStore((state) => state.user);
+  const logout = useAuthStore((state) => state.logout);
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
 
   const { data: homeworld } = useQuery(
     ["homeworld", person?.homeworld],
@@ -48,122 +52,97 @@ const PersonDetail = () => {
     );
   }
 
-  const detailTextStyle = {
-    fontSize: "1.2rem",
-    fontWeight: 200,
-    color: "#333",
-  };
-
   return (
     <Container size="md" py="xl">
-      {/* Title */}
       {user && (
-        <div style={{ position: 'absolute', top: 12, right: 13, marginBottom:"20px" }}>
-          <Button
-            variant="outline"
-            color="red"
-            onClick={handleLogout}
-            size="md"
-            radius="xl"
-            sx={{
-              '&:hover': { backgroundColor: 'red', color: 'white' },
-            }}
-          >
+        <Box pos="absolute" top={16} right={20}>
+          <Button variant="light" color="red" radius="xl" onClick={handleLogout}>
             Logout
           </Button>
-        </div>
+        </Box>
       )}
 
-      <Title
-        align="center"
-        order={2}
-        mb="lg"
-        style={{
-          background: "linear-gradient(45deg, #FF6B6B, #FFD93D)",
-          WebkitBackgroundClip: "text",
-          color: "transparent",
-          textShadow: "1px 1px 2px rgba(0,0,0,0.25)",
-          fontSize: "2.5rem",
-          marginTop:"30px"
-        }}
-      >
-        {person.name}
-      </Title>
-
-      <Card
-        shadow="md"
-        padding="xl"
-        radius="md"
-        withBorder
-        style={{ backgroundColor: "#fff" }}
-      >
-        {/* Avatar */}
-        {imageLoading && (
-          <Center my="md">
-            <Loader size="md" />
-          </Center>
-        )}
-        <Avatar
-          size={180}
-          src={`https://robohash.org/${person.name}`}
-          alt={person.name}
-          radius={100}
-          style={{ margin: "0 auto", border: "2px solid #eee" }}
-          onLoad={() => setImageLoading(false)}
-        />
-
-        <Stack spacing="sm" mt="lg">
-          <Text style={detailTextStyle}>
-            <strong>Height:</strong> {person.height} cm
-          </Text>
-          <Text style={detailTextStyle}>
-            <strong>Mass:</strong> {person.mass} kg
-          </Text>
-          <Text style={detailTextStyle}>
-            <strong>Birth Year:</strong> {person.birth_year}
-          </Text>
-          <Text style={detailTextStyle}>
-            <strong>Homeworld:</strong> {homeworld?.name || "Loading..."}
-          </Text>
-          <Text style={detailTextStyle}>
-            <strong>Skin Color:</strong> {person.skin_color}
-          </Text>
-          <Text style={detailTextStyle}>
-            <strong>Eye Color:</strong> {person.eye_color}
-          </Text>
-          <Text style={detailTextStyle}>
-            <strong>Gender:</strong> {person.gender}
-          </Text>
-        </Stack>
-      </Card>
-
-      <Text style={{ ...detailTextStyle, fontStyle: 'italic', color: '#777', marginTop: 8, fontSize:"12" }}>
-    Disclaimer: This image is not related to any API; it serves as a sample image.
-  </Text>
-
-
       <Center>
+        <Box>
+          <Center mb="md">
+            {imageLoading && <Loader size="md" />}
+            <Avatar
+              size={160}
+              src={`https://robohash.org/${person.name}`}
+              radius={160}
+              alt={person.name}
+              onLoad={() => setImageLoading(false)}
+              style={{
+                border: "3px solid #ced4da",
+              }}
+            />
+          </Center>
+          <Title align="center" order={2} color="dark" mb="xs">
+            {person.name}
+          </Title>
+          <Center>
+            <Badge variant="outline" color="gray" size="lg">
+              {homeworld?.name || "Homeworld"}
+            </Badge>
+          </Center>
+        </Box>
+      </Center>
+
+      <Grid mt="xl" gutter="xl">
+        <Grid.Col span={12} md={6}>
+          <Card shadow="md" padding="lg" radius="md" withBorder>
+            <Title order={4} mb="sm" color="blue.7">
+              Physical Attributes
+            </Title>
+            <Divider mb="sm" />
+            <Text size="md">
+              <strong>Height:</strong> {person.height} cm
+            </Text>
+            <Text size="md">
+              <strong>Mass:</strong> {person.mass} kg
+            </Text>
+            <Text size="md">
+              <strong>Birth Year:</strong> {person.birth_year}
+            </Text>
+          </Card>
+        </Grid.Col>
+
+        <Grid.Col span={12} md={6}>
+          <Card shadow="md" padding="lg" radius="md" withBorder>
+            <Title order={4} mb="sm" color="teal.7">
+              Appearance
+            </Title>
+            <Divider mb="sm" />
+            <Text size="md">
+              <strong>Skin Color:</strong> {person.skin_color}
+            </Text>
+            <Text size="md">
+              <strong>Eye Color:</strong> {person.eye_color}
+            </Text>
+            <Text size="md">
+              <strong>Gender:</strong> {person.gender}
+            </Text>
+          </Card>
+        </Grid.Col>
+      </Grid>
+
+      <Text
+        mt="lg"
+        align="center"
+        color="dimmed"
+        size="sm"
+        style={{ fontStyle: "italic" }}
+      >
+        Note: The image shown is a generated sample and not part of the API.
+      </Text>
+
+      <Center mt="xl">
         <Button
           size="md"
-          component="a"
-          href="/people"
-          style={{
-            background: "linear-gradient(135deg, #f3c9d6, #e2f0cb)",
-            color: "#333",
-            border: "none",
-            padding: "0.6rem 1.4rem",
-            fontWeight: 600,
-            transition: "transform 0.2s, box-shadow 0.2s",
-            marginTop: "30px",
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.transform = "scale(1.05)";
-            e.currentTarget.style.boxShadow = "0 4px 10px rgba(0,0,0,0.15)";
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.transform = "scale(1)";
-            e.currentTarget.style.boxShadow = "none";
-          }}
+          radius="md"
+          color="blue"
+          variant="filled"
+          onClick={() => navigate("/people")}
         >
           ← Back to People List
         </Button>
